@@ -21,3 +21,24 @@ type Order struct {
 	DateCreated       time.Time `json:"date_created" gorm:"not null"`
 	OofShard          string    `json:"oof_shard" gorm:"not null"`
 }
+
+type CachableOrder struct {
+	*Order
+	LastUsed time.Time
+}
+
+func (o *CachableOrder) Key() string {
+	return o.ID
+}
+
+func (o *CachableOrder) Value() interface{} {
+	return o.Order
+}
+
+func (o *CachableOrder) UpdatePriority() {
+	o.LastUsed = time.Now()
+}
+
+func (o *CachableOrder) Priority() int64 {
+	return o.LastUsed.UnixNano()
+}

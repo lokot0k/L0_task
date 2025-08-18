@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"strconv"
 )
 
 type Config struct {
@@ -13,9 +14,14 @@ type Config struct {
 	KafkaBrokers     string
 	AppIP            string
 	AppPort          string
+	CacheLimit       int
 }
 
 func LoadConfig() *Config {
+	cacheLimit, err := strconv.Atoi(os.Getenv("CACHE_LIMIT"))
+	if err != nil {
+		panic("Cache limit is not defined!")
+	}
 	cfg := &Config{
 		PostgresUser:     os.Getenv("POSTGRES_USER"),
 		PostgresPassword: os.Getenv("POSTGRES_PASSWORD"),
@@ -25,6 +31,7 @@ func LoadConfig() *Config {
 		KafkaBrokers:     os.Getenv("KAFKA_BROKERS"),
 		AppIP:            os.Getenv("APP_IP"),
 		AppPort:          os.Getenv("APP_PORT"),
+		CacheLimit:       cacheLimit,
 	}
 
 	return cfg

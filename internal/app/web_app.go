@@ -5,6 +5,7 @@ import (
 	"L0_task/internal/database"
 	"L0_task/internal/midlleware"
 	"L0_task/internal/route"
+	"L0_task/pkg/cache"
 	"fmt"
 	"github.com/gin-gonic/gin"
 )
@@ -16,6 +17,7 @@ func RunWebServer(cfg *config.Config) {
 
 	// подключение мидлвари для всех роутов
 	engine.Use(gin.Recovery(), midlleware.DBMiddleware(db))
+	engine.Use(gin.Recovery(), midlleware.CacheMiddleware(cache.NewCache(cfg.CacheLimit)))
 
 	// подключение роутов
 	route.AddOrderRoutes(engine)
