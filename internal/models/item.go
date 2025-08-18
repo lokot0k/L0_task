@@ -3,7 +3,6 @@ package models
 type Item struct {
 	ID          string `json:"-" gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
 	ChrtID      int    `json:"chrt_id" gorm:"not null"`
-	OrderID     string `json:"-"`
 	TrackNumber string `json:"track_number" gorm:"not null"`
 	Price       int    `json:"price" gorm:"not null"`
 	Rid         string `json:"rid" gorm:"not null"`

@@ -7,11 +7,11 @@ import (
 type Order struct {
 	ID                string    `json:"order_uid" gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
 	DeliveryID        string    `json:"-" gorm:"not null"` // поле для связи с доставкой
-	TrackNumber       string    `json:"track_number" gorm:"not null"`
+	TrackNumber       string    `json:"track_number" gorm:"not null;unique"`
 	Entry             string    `json:"entry" gorm:"not null"`
 	Delivery          Delivery  `json:"delivery" gorm:"foreignKey:DeliveryID"`
-	Payment           Payment   `json:"payment" gorm:"foreignKey:OrderID"`
-	Items             []Item    `json:"items" gorm:"foreignKey:OrderID"`
+	Payment           Payment   `json:"payment" gorm:"foreignKey:Transaction"`
+	Items             []Item    `json:"items" gorm:"foreignKey:TrackNumber;references:TrackNumber"`
 	Locale            string    `json:"locale" gorm:"not null"`
 	InternalSignature string    `json:"internal_signature" gorm:"not null"`
 	CustomerID        string    `json:"customer_id" gorm:"not null"`
