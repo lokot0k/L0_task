@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка заказов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            border: 1px solid #ebccd1;
+            color: #a94442;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Проверка статуса заказа</h1>
+    <div class="input-group">
+        <label for="orderId">Введите ID заказа:</label>
+        <input type="text" id="orderId" placeholder="Например: abc123-def456">
+    </div>
+    <button onclick="getOrder()">Получить информацию о заказе</button>
+
+    <div id="successResult" class="result success">
+        <h3>Успешно!</h3>
+        <pre id="successContent"></pre>
+    </div>
+
+    <div id="errorResult" class="result error">
+        <h3>Произошла ошибка</h3>
+        <p id="errorContent"></p>
+    </div>
+</div>
+
+<script>
+    function getOrder() {
+        const orderId = document.getElementById('orderId').value.trim();
+
+        document.getElementById('successResult').style.display = 'none';
+        document.getElementById('errorResult').style.display = 'none';
+
+        if (!orderId) {
+            showError('Пожалуйста, введите ID заказа');
+            return;
+        }
+
+        const url = `http://0.0.0.0:8080/order/${orderId}`;
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Произошла ошибка при получении данных');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Показываем успешный результат
+                showSuccess(data);
+            })
+            .catch(error => {
+                // Показываем ошибку
+                showError(error.message);
+            });
+    }
+
+    function showSuccess(data) {
+        const successElement = document.getElementById('successResult');
+        const contentElement = document.getElementById('successContent');
+
+        contentElement.textContent = JSON.stringify(data, null, 2);
+        successElement.style.display = 'block';
+    }
+
+    function showError(message) {
+        const errorElement = document.getElementById('errorResult');
+        const contentElement = document.getElementById('errorContent');
+
+        contentElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+
+    document.getElementById('orderId').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            getOrder();
+        }
+    });
+</script>
+</body>
+</html>

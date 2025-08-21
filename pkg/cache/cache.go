@@ -3,7 +3,6 @@ package cache
 
 import (
 	"container/heap"
-	"fmt"
 )
 
 type Cachable interface {
@@ -74,7 +73,6 @@ func (c *Cache) Get(key string) interface{} {
 	}
 	item.item.UpdatePriority()
 	heap.Fix(c.pq, item.index)
-	fmt.Printf("inside get, priority %v\n", item.item.Priority())
 	return item.item.Value()
 }
 
@@ -86,5 +84,4 @@ func (c *Cache) Put(key string, item Cachable) {
 	cacheItem := &cachableItem{item: item}
 	c.items[key] = cacheItem
 	heap.Push(c.pq, item)
-	fmt.Printf("inside Put, priority %v\n", cacheItem.item.Priority())
 }

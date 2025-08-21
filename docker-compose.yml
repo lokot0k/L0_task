@@ -35,7 +35,7 @@ services:
       KAFKA_RESTART_DELAY: "5"
       ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL: "0"
     volumes:
-      - kafka-data:/var/lib/kafka/data
+      - kafka-data:/bitnami/kafka
     depends_on:
       - zookeeper
     networks:
