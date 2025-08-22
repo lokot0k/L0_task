@@ -14,6 +14,7 @@ type Config struct {
 	KafkaBrokers     string
 	AppIP            string
 	AppPort          string
+	KafkaTopic       string
 	CacheLimit       int
 }
 
@@ -31,6 +32,7 @@ func LoadConfig() *Config {
 		KafkaBrokers:     os.Getenv("KAFKA_BROKERS"),
 		AppIP:            os.Getenv("APP_IP"),
 		AppPort:          os.Getenv("APP_PORT"),
+		KafkaTopic:       os.Getenv("KAFKA_TOPIC"),
 		CacheLimit:       cacheLimit,
 	}
 

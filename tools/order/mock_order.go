@@ -1,9 +1,10 @@
-package utils
+package order
 
 import (
 	"L0_task/internal/models"
 	"fmt"
 	"github.com/go-faker/faker/v4"
+	"log"
 )
 
 // GenerateMockOrders вспомогательная функция для генерирования мока Order
@@ -15,7 +16,8 @@ func GenerateMockOrders(count int) []*models.Order {
 		var secondItem models.Item
 		err := faker.FakeData(&order)
 		if err != nil {
-			panic(fmt.Errorf("GenerateMockOrders error: %w", err))
+			log.Printf(fmt.Sprintf("GenerateMockOrders error: %w", err))
+			continue // на случай каких-то неудачных данных, печатаем ошибку и все
 		}
 		err = faker.FakeData(&item)
 		err = faker.FakeData(&secondItem)

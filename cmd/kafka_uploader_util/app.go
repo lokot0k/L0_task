@@ -1,34 +1,29 @@
 package main
 
 import (
-	"L0_task/pkg/utils"
-	"fmt"
+	"L0_task/internal/app"
+	"L0_task/internal/config"
+	"L0_task/pkg/kafka"
+	"L0_task/tools/order"
+	"github.com/IBM/sarama"
 )
 
 const (
-	kafkaBrokers = "0.0.0.0:9092"
-	kafkaTopic   = "test"
-	uploadCount  = 10
+	uploadCount = 3 // подразумевается, что это утилитарный тестовый сервис, поэтому в .env не выносим
 )
 
 func main() {
-	//producer, err := CreateProducer
-	//if err != nil {
-	//	panic(fmt.Errorf("failed to create producer: %v", err))
-	//}
-	//
-	//defer func(producer sarama.SyncProducer) {
-	//	err := producer.Close()
-	//	if err != nil {
-	//		panic("Failed to close producer")
-	//	}
-	//}(producer)
-	//
-	//err = produceJSONs(producer, generateTestData(15))
-	//if err != nil {
-	//	log.Fatalf("Failed to produce messages: %v", err)
-	//}
-	//
-	//fmt.Println("Done")
-	fmt.Printf("%+v", utils.GenerateMockOrders(1)[0])
+	cfg := config.LoadConfig()
+	kafkaProducer, err := kafka.CreateProducer(cfg.KafkaBrokers)
+	if err != nil {
+		panic(err)
+	}
+	defer func(kafkaProducer sarama.SyncProducer) {
+		err := kafkaProducer.Close()
+		if err != nil {
+			panic(err)
+		}
+	}(kafkaProducer)
+	orders := order.GenerateMockOrders(uploadCount)
+	app.UploadOrders(kafkaProducer, cfg.KafkaTopic, orders)
 }
