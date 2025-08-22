@@ -1,4 +1,4 @@
-// Реализация кэша на min-heap
+// Package cache Реализация кэша на min-heap
 package cache
 
 import (
@@ -17,7 +17,7 @@ type cachableItem struct {
 	index int
 }
 
-// имплементация min-heap для Cachable
+// имплементация очереди с приоритетом для Cachable, реализация интерфейса heap.Interface
 type cachablePQ []*cachableItem
 
 func (pq *cachablePQ) Len() int {

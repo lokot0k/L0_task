@@ -1,12 +1,18 @@
 package service
 
-import "L0_task/internal/models"
+import (
+	"L0_task/internal/models"
+)
 
-type OrderRepository interface {
+type orderRepository interface {
 	GetByID(uid string) (*models.Order, error)
 	Create(order *models.Order) error
 }
 
-func GetOrderByID(uid string, repository OrderRepository) (*models.Order, error) {
+func GetOrderByID(uid string, repository orderRepository) (*models.Order, error) {
 	return repository.GetByID(uid)
+}
+
+func CreateOrder(order *models.Order, repository orderRepository) error {
+	return repository.Create(order)
 }

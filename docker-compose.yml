@@ -68,6 +68,18 @@ services:
     networks:
       - app-network
 
+  l0_kafka_loader:
+    build:
+      context: .
+      dockerfile: build/kafka_loader/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - kafka
+      - postgres
+    networks:
+      - app-network
+
 volumes:
   postgres-data:
   kafka-data:
