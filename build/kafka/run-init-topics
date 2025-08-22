@@ -1,0 +1,5 @@
+#!/bin/sh
+
+/init-topics.sh &
+
+exit 0

@@ -3,7 +3,7 @@ package main
 import (
 	"L0_task/internal/app"
 	"L0_task/internal/config"
-	"L0_task/pkg/kafka"
+	"L0_task/tools/kafka"
 	"L0_task/tools/order"
 	"github.com/IBM/sarama"
 )

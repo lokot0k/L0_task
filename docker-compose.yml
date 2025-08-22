@@ -36,6 +36,8 @@ services:
       ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL: "0"
     volumes:
       - kafka-data:/bitnami/kafka
+      - "./build/kafka/run-init-topics.sh:/docker-entrypoint-initdb.d/run-init-kafka-topics.sh:ro"
+      - "./build/kafka/init-topics.sh:/init-kafka-topics.sh:ro"
     depends_on:
       - zookeeper
     networks:
