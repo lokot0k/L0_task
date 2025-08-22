@@ -16,11 +16,19 @@ func GenerateMockOrders(count int) []*models.Order {
 		var secondItem models.Item
 		err := faker.FakeData(&order)
 		if err != nil {
-			log.Printf(fmt.Sprintf("GenerateMockOrders error: %w", err))
+			log.Printf("%s", fmt.Sprintf("GenerateMockOrders error: %v", err))
 			continue // на случай каких-то неудачных данных, печатаем ошибку и все
 		}
 		err = faker.FakeData(&item)
+		if err != nil {
+			log.Printf("%s", fmt.Sprintf("GenerateMockOrders error: %v", err))
+			continue
+		}
 		err = faker.FakeData(&secondItem)
+		if err != nil {
+			log.Printf("%s", fmt.Sprintf("GenerateMockOrders error: %v", err))
+			continue
+		}
 		item.TrackNumber = order.TrackNumber
 		secondItem.TrackNumber = order.TrackNumber
 		order.Items = []models.Item{item, secondItem}

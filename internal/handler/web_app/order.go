@@ -35,6 +35,6 @@ func GetOrder(c *gin.Context) {
 		}
 		return
 	}
-	cacheDep.Put(orderID, &models.CachableOrder{order, time.Now()})
+	cacheDep.Put(orderID, &models.CachableOrder{Order: order, LastUsed: time.Now()})
 	c.JSON(http.StatusOK, order)
 }
