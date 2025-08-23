@@ -25,7 +25,7 @@ func (pq *cachablePQ) Len() int {
 }
 
 func (pq *cachablePQ) Less(i, j int) bool {
-	return (*pq)[i].item.Priority() < (*pq)[j].item.Priority()
+	return (*pq)[i].item.Priority() > (*pq)[j].item.Priority() // куча должна распределяться от меньшего к большему
 }
 
 func (pq *cachablePQ) Swap(i, j int) {

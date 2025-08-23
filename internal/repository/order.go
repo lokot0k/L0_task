@@ -29,6 +29,6 @@ func (r *OrderRepository) GetByID(uid string) (*models.Order, error) {
 }
 
 func (r *OrderRepository) Create(order *models.Order) error {
-	err := r.db.Create(order).Error
+	err := r.db.Create(order).Error // единичный Create уже несет в себе транзакцию, поэтому оставляем так
 	return err
 }
